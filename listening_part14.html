@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listening - Part 2 (Câu 14)</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="img/favicon.png" type="image/x-icon">
+</head>
+<body>
+    <header id="header-placeholder"></header>
+    <div class="content-pusher">
+        <div class="container">
+            <div class="page-intro">
+                <h1>Listening - Luyện tập Câu 14</h1>
+                <p>Nối ý kiến với người nói tương ứng</p>
+            </div>
+<!-- Trong file listening_part14.html -->
+
+            <div class="explanation-box">
+                <h3>💡 Phương pháp học & Chiến lược làm bài Câu 14</h3>
+                <p>Nghe 4 đoạn độc thoại và nối 4 ý kiến với đúng người nói. Đây là phần kiểm tra kỹ năng nghe-hiểu và loại trừ thông tin nhiễu.</p>
+                
+                <h4>Lưu ý quan trọng trong phòng thi:</h4>
+                <ul>
+                    <li>Thứ tự người nói (Speaker A, B, C, D) và thứ tự các lựa chọn đáp án trên màn hình có thể bị <strong>xáo trộn ngẫu nhiên</strong>.</li>
+                    <li>Nhiệm vụ của bạn là <strong>nối đúng cặp (Người nói - Ý kiến)</strong>.</li>
+                </ul>
+
+                <h4>Các dạng bẫy và cách xử lý:</h4>
+                <div class="method-step" style="border-top: none; padding-top: 0;">
+                    <p><strong>Trường hợp 1: Người nói đề cập đến nhiều ý kiến</strong></p>
+                    <ul>
+                        <li><strong>Bẫy:</strong> Người nói có thể nhắc đến ý kiến của người khác trước (ví dụ: "Some of my friends prefer A...") để làm nhiễu, sau đó mới đưa ra ý kiến của mình ("...but I think B is better because...").</li>
+                        <li><strong>Chiến lược:</strong> Lắng nghe kỹ các từ nối thể hiện quan điểm cá nhân như <strong>`but, however, personally, for me, I think, I find`</strong>. Đây thường là dấu hiệu cho đáp án đúng.</li>
+                    </ul>
+                </div>
+                <div class="method-step">
+                    <p><strong>Trường hợp 2: Bẫy từ khóa "used to"</strong></p>
+                    <ul>
+                        <li><strong>Bẫy:</strong> Trong bài nghe có thể xuất hiện từ khóa của một đáp án, nhưng đi kèm với cấu trúc `used to` (đã từng).</li>
+                        <li><strong>Chiến lược:</strong> Nếu bạn nghe thấy "I <strong>used to</strong> think A is good, but now...", hãy <b>loại ngay đáp án A</b>, vì đó là quan điểm trong quá khứ, không phải hiện tại.</li>
+                    </ul>
+                </div>
+                 <div class="method-step">
+                    <p><strong>Trường hợp 3: Bẫy phủ định "but"</strong></p>
+                    <ul>
+                        <li><strong>Bẫy:</strong> Người nói có thể nêu ra một ý tưởng, nhưng ngay sau đó lại phủ định nó bằng từ `but`.</li>
+                        <li><strong>Chiếng lược:</strong> Ví dụ: "Option A is interesting, <strong>but</strong> it has many problems." -> Đáp án <b>không phải</b> là A. Hãy lắng nghe ý kiến thực sự ở vế sau.</li>
+                    </ul>
+                </div>
+
+                <h4>Mẹo nhận biết đáp án đúng:</h4>
+                <p>Các câu trả lời đúng thường chứa các từ/cụm từ thể hiện quan điểm hoặc sự lựa chọn một cách trực tiếp. Hãy đặc biệt chú ý đến các lựa chọn có chứa:</p>
+                <p><code>but, so, however, therefore, personally, instead of, that's a great/good way</code></p>
+            </div>
+            <main id="quiz-container">
+                <!-- Các câu hỏi sẽ được chèn vào đây -->
+            </main>
+        </div>
+        <footer id="footer-placeholder"></footer>
+    </div>
+    <script src="js/main.js"></script>
+    <script src="js/data-listening-part14.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const quizContainer = document.getElementById('quiz-container');
+            const topics = listeningPart14Data;
+
+            topics.forEach((item, index) => {
+                const originalFragmentsWithIndex = item.fragments.map((frag, i) => ({ text: frag, originalIndex: i + 1 }));
+                const shuffledFragments = [...originalFragmentsWithIndex].sort(() => Math.random() - 0.5);
+                const card = document.createElement('div');
+                card.className = 'quiz-card';
+                card.dataset.key = item.key;
+
+                let listItems = '';
+                shuffledFragments.forEach(frag => {
+                    listItems += `<li data-original-index="${frag.originalIndex}">
+                                <span class="original-number">${String.fromCharCode(64 + frag.originalIndex)}</span> ${frag.text}
+                              </li>`;
+                });
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h2>Đề bài ${index + 1}: ${item.title}</h2>
+                    </div>
+                    <h4>Nghe đoạn hội thoại:</h4>
+                    <div class="audio-player-container">
+                        <audio controls class="custom-audio-player" src="${item.audioSrc}"></audio>
+                    </div>
+                    <p class="instructions">Sắp xếp các ý kiến theo đúng thứ tự người nói.</p>
+                    <ul class="sentence-list sortable-list">${listItems}</ul>
+                    <div class="feedback-message"></div>
+                    <div class="card-actions">
+                        <button class="action-btn check-answer-btn">Kiểm tra đáp án</button>
+                        <button class="action-btn show-script-btn">Xem Script</button>
+                    </div>
+                    <div class="answer-section" style="display: none;">
+                        <h4>Transcript</h4>
+                        <div class="script-content">${item.script}</div>
+                    </div>
+                `;
+                quizContainer.appendChild(card);
+                const sortableList = card.querySelector('.sortable-list');
+                new Sortable(sortableList, { animation: 150, ghostClass: 'sortable-ghost' });
+            });
+
+            quizContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('check-answer-btn')) { /* ... logic check answer cũ ... */ const card = e.target.closest('.quiz-card'); const list = card.querySelector('.sortable-list'); const feedbackDiv = card.querySelector('.feedback-message'); const correctKey = card.dataset.key; const currentOrder = Array.from(list.querySelectorAll('li')).map(li => li.dataset.originalIndex).join('-'); card.classList.remove('correct', 'incorrect'); if (currentOrder === correctKey) { card.classList.add('correct'); feedbackDiv.innerHTML = '🎉 Chính xác! Rất tốt!'; } else { card.classList.add('incorrect'); feedbackDiv.innerHTML = '❌ Sai rồi! Hãy thử sắp xếp lại.'; } }
+                if (e.target.classList.contains('show-script-btn')) { /* ... logic show script mới ... */ const answerSection = e.target.closest('.card-actions').nextElementSibling; const isVisible = answerSection.style.display === 'block'; answerSection.style.display = isVisible ? 'none' : 'block'; e.target.textContent = isVisible ? 'Ẩn Script' : 'Xem Script'; }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listening - Part 4 (Q16-17)</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/quiz.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="img/favicon.png" type="image/x-icon">
+</head>
+
+<body>
+    <header id="header-placeholder"></header>
+    <div class="content-pusher">
+        <div class="container">
+            <div class="page-intro">
+                <h1>Listening - Part 4 (Câu 16-17)</h1>
+                <p>Nghe một đoạn độc thoại dài hơn và trả lời 2 câu hỏi về nó.</p>
+            </div>
+            <div class="explanation-box">
+                <h3>💡 Phương pháp kiểm tra trí nhớ</h3>
+                <p>
+                    Đây là trang kiểm tra nhanh trí nhớ của bạn. Mục tiêu là <b>vận dụng</b> những gì bạn đã học được từ
+                    trang "List Key" để trả lời các câu hỏi.
+                </p>
+                <p>
+                    Nếu bạn chưa ôn tập, hãy mở trang này để ôn nhé!
+                </p>
+
+                <div class="resource-links">
+                    <a href="listening_part1617.html" target="_blank" class="action-btn">Học từ trang List Key</a>
+                </div>
+
+                <h4>Các bước thực hiện:</h4>
+                <ol>
+                    <li><strong>Ôn tập thật kỹ:</strong> Dành thời gian học thuộc các đáp án và ghi nhớ từ in đậm.</li>
+                    <li><strong>Kiểm tra trí nhớ:</strong> Quay lại trang này và trả lời tất cả các câu hỏi dựa trên
+                        những gì bạn nhớ được.</li>
+                    <li><strong>Xem kết quả:</strong> Sau khi hoàn thành, nhấn nút "Kiểm tra đáp án" ở cuối trang để xem
+                        bạn đã nhớ đúng bao nhiêu câu.</li>
+                </ol>
+            </div>
+            <main id="quiz-container">
+                <!-- Nội dung câu hỏi trắc nghiệm sẽ được JS chèn vào đây -->
+            </main>
+            <div class="pagination-controls" id="pagination-controls">
+                <!-- Nút phân trang sẽ được JS chèn vào đây -->
+            </div>
+            <div class="card-actions" style="justify-content: center; margin-top: 20px;">
+                <button class="action-btn check-answer-btn" id="check-answers-btn">Kiểm tra đáp án</button>
+            </div>
+            <div id="result-message" class="feedback-message" style="text-align: center; margin-top: 20px;"></div>
+        </div>
+        <footer id="footer-placeholder"></footer>
+    </div>
+
+    <script src="js/data-listening-part4.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const quizContainer = document.getElementById('quiz-container');
+            const paginationControls = document.getElementById('pagination-controls');
+            const checkAnswersBtn = document.getElementById('check-answers-btn');
+            const resultMessage = document.getElementById('result-message');
+
+            const questions = listeningPart4Data.part4;
+            const questionsPerPage = 10;
+            let currentPage = 1;
+
+            // === HÀM RENDER ĐÃ ĐƯỢC CẬP NHẬT LOGIC ĐÁNH SỐ ===
+            function renderPage(page) {
+                quizContainer.innerHTML = '';
+                currentPage = page;
+                const start = (page - 1) * questionsPerPage;
+                const end = start + questionsPerPage;
+                const questionsToRender = questions.slice(start, end);
+
+                let topicCounter = Math.floor(start / 2) + 1;
+                let subQuestionCounter = 1;
+
+                questionsToRender.forEach((q, index) => {
+                    const questionIndex = start + index;
+
+                    // Logic đánh số mới
+                    if (index > 0 && q.topicId !== questionsToRender[index - 1].topicId) {
+                        topicCounter++;
+                        subQuestionCounter = 1;
+                    }
+                    const questionNumber = `${topicCounter}.${subQuestionCounter}`;
+                    subQuestionCounter++;
+
+                    const questionElement = document.createElement('div');
+                    questionElement.className = 'quiz-card listening-question';
+                    questionElement.dataset.questionIndex = questionIndex;
+
+                    let optionsHTML = '';
+                    q.options.forEach((option) => {
+                        optionsHTML += `
+                            <label class="radio-label">
+                                <input type="radio" name="question-${questionIndex}" value="${option}">
+                                <span>${option}</span>
+                            </label>
+                        `;
+                    });
+
+                    questionElement.innerHTML = `
+                        <p class="question-title">${questionNumber}. ${q.question}</p>
+                        <div class="options-container">
+                            ${optionsHTML}
+                        </div>
+                        <div class="feedback-answer" style="display: none;"></div>
+                    `;
+                    quizContainer.appendChild(questionElement);
+                });
+                renderPagination();
+                resultMessage.textContent = '';
+            }
+
+            function renderPagination() {
+                paginationControls.innerHTML = '';
+                const pageCount = Math.ceil(questions.length / questionsPerPage);
+                for (let i = 1; i <= pageCount; i++) {
+                    const button = document.createElement('button');
+                    button.textContent = i;
+                    button.className = (i === currentPage) ? 'active' : '';
+                    button.addEventListener('click', () => renderPage(i));
+                    paginationControls.appendChild(button);
+                }
+            }
+
+            checkAnswersBtn.addEventListener('click', function () {
+                const questionCards = quizContainer.querySelectorAll('.listening-question');
+                let correctCount = 0;
+
+                questionCards.forEach(card => {
+                    const questionIndex = parseInt(card.dataset.questionIndex);
+                    const questionData = questions[questionIndex];
+                    const selectedRadio = card.querySelector(`input[name="question-${questionIndex}"]:checked`);
+                    const feedbackDiv = card.querySelector('.feedback-answer');
+
+                    card.classList.remove('correct', 'incorrect');
+                    feedbackDiv.style.display = 'block';
+
+                    if (selectedRadio) {
+                        if (selectedRadio.value === questionData.answer) {
+                            card.classList.add('correct');
+                            feedbackDiv.textContent = 'Chính xác!';
+                            correctCount++;
+                        } else {
+                            card.classList.add('incorrect');
+                            feedbackDiv.innerHTML = `Sai rồi! Đáp án đúng là: <strong>${questionData.answer}</strong>`;
+                        }
+                    } else {
+                        card.classList.add('incorrect');
+                        feedbackDiv.innerHTML = `Bạn chưa chọn đáp án. Đáp án đúng là: <strong>${questionData.answer}</strong>`;
+                    }
+                });
+
+                resultMessage.innerHTML = `Bạn đã trả lời đúng <strong>${correctCount}/${questionCards.length}</strong> câu trên trang này.`;
+            });
+
+            renderPage(1);
+        });
+    </script>
+</body>
+
+</html>
